@@ -14,10 +14,10 @@ type  Validator[T any] func(inp T) error
 // validates if the input value equals to the parameter.
 func Eq[T comparable](pattern T) Validator[T] {
    return func(inp T) error {
-     if (inp != pattern) {
-        return errors.New("StrEq error")
+     if (inp == pattern) {
+      return nil
      }
-     return nil
+     return errors.New("error: Eq")
    }
 }
 
@@ -25,10 +25,21 @@ func Eq[T comparable](pattern T) Validator[T] {
 // validates if the input value less than the parameter.
 func Lt[T constraints.Ordered](pattern T) Validator[T] {
    return func(inp T) error {
-     if (inp < pattern) {
-        return errors.New("StrEq error")
+      if (inp < pattern) {
+         return nil
+      }
+     return errors.New("error: Lt")
+   }
+}
+
+// Factory function with a parameter that returns a validator, that
+// validates if the input value less than the parameter.
+func Gt[T constraints.Ordered](pattern T) Validator[T] {
+   return func(inp T) error {
+     if (inp > pattern) {
+      return nil
      }
-     return nil
+     return errors.New("error: Gt")
    }
 }
 
@@ -37,10 +48,10 @@ func Lt[T constraints.Ordered](pattern T) Validator[T] {
 func Regexp(pattern string) Validator[string] {
    return func(inp string) error {
       matched, err := regexp.MatchString(pattern, inp)
-      if (err != nil) || (!matched) {
-         return errors.New("Regexp error")
+      if (err == nil) && (matched) {
+         return nil
       }
-      return nil
+      return errors.New("error: Regexp")
    }
 }
 
@@ -51,7 +62,7 @@ func LenEq[T string | []T](length int) Validator[T] {
       if (len(inp) == length) {
          return nil
       }
-      return errors.New("length error: Eq")
+      return errors.New("error: LenEq")
    }
 }
 
@@ -62,7 +73,7 @@ func LenBw[T string | []T](min int, max int) Validator[T] {
       if (min <= len(inp)) && (len(inp) <= max) {
          return nil
       }
-      return errors.New("length error: Bw")
+      return errors.New("error: LenBw")
    }
 }
 
@@ -73,7 +84,7 @@ func LenLt[T string | []T](length int) Validator[T] {
       if (len(inp) < length) {
          return nil
       }
-      return errors.New("length error: Lt")
+      return errors.New("error: LenLt")
    }
 }
 
@@ -84,7 +95,31 @@ func LenGt[T string | []T](length int) Validator[T] {
       if (len(inp) > length) {
         return nil
       }
-      return errors.New("length error: Gt")
+      return errors.New("error: LenGt")
+   }
+}
+
+// Factory function with a number of parameters that returns a validator, that validates
+// if the input is one of the values in the parameters.
+func OneOf[T comparable] (elems ...T) Validator[T] {
+   return func (inp T) error {
+      for _,e := range elems {
+         if e == inp {
+            return nil
+         }
+      }
+      return errors.New("error: OneOf")
+   }
+}
+
+// Factory function that takes variable number of validators, and returns a validator
+// that validates if all the parameter validators are valid.
+func Not[T any](validator Validator[T]) Validator[T] {
+   return func (inp T) error {
+      if err := validator(inp); err != nil {
+          return nil
+      }
+      return errors.New("error: Not")
    }
 }
 
@@ -110,7 +145,7 @@ func Or[T any](validators ...Validator[T]) Validator[T] {
           return nil
         }
       }
-      return errors.New("All validator failed in StrOr")
+      return errors.New("error: Or")
    }
 }
 

@@ -7,7 +7,7 @@ import (
 	fv "github.com/krizmak/funcvalid"
 )
 
-func TestString(t *testing.T) {
+func TestFuncValid(t *testing.T) {
 	err := fv.Eq("test")("test")
 	assert.Equal(t, err, nil)
 
@@ -27,5 +27,9 @@ func TestString(t *testing.T) {
 	assert.NotEqual(t, fv.Or(fv.Regexp("d.*"), fv.Regexp("c.*"))("beta"), nil)
 
 	assert.Equal(t, fv.Eq[uint](32)(32), nil)
+
+
+	assert.Equal(t, fv.OneOf(1,2,3)(1), nil)
+	assert.NotEqual(t, fv.OneOf(1,2,3)(4), nil)
 	
 }

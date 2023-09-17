@@ -1,8 +1,8 @@
 /*
 Package funcvalid is a tiny validator package in functional style.
 
-Unlike the usual go validators, it does not rely on the tag feature of the structs, because they break the type
-safety that golang types ensures.
+Unlike the usual go validators, it does not rely on the tag feature of the structs, because they
+don't benefit from the type safety that golang types ensures.
 
 So funcvalid package:
 
