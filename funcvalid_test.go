@@ -28,8 +28,17 @@ func TestFuncValid(t *testing.T) {
 
 	assert.Equal(t, fv.Eq[uint](32)(32), nil)
 
+	assert.Equal(t, fv.OneOf(1, 2, 3)(1), nil)
+	assert.NotEqual(t, fv.OneOf(1, 2, 3)(4), nil)
 
-	assert.Equal(t, fv.OneOf(1,2,3)(1), nil)
-	assert.NotEqual(t, fv.OneOf(1,2,3)(4), nil)
-	
+	assert.NotEqual(t, fv.Alpha("test_"), nil)
+	assert.Equal(t, fv.Alpha("test"), nil)
+
+	assert.NotEqual(t, fv.Email("test"), nil)
+	assert.Equal(t, fv.Email("test@test.com"), nil)
+
+	assert.NotEqual(t, fv.PostCodeByIso3166("HUS")("8200"), nil)
+	assert.NotEqual(t, fv.PostCodeByIso3166("HU")("82001"), nil)
+	assert.Equal(t, fv.PostCodeByIso3166("HU")("8200"), nil)
+
 }
