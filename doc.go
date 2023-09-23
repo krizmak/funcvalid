@@ -56,6 +56,10 @@ Not, Or and And factory functions with that you can chain other validators.
 
 For further details see the documentation of the functions, and have a functional fun in Go!
 
+I've copied/reworked most of the built-in validators from the [validator] package, that is the best of the
+tag based validators.
+
 [curry post]: https://medium.com/@meeusdylan/function-currying-in-go-a88672d6ebcf
+[validator]: https://github.com/go-playground/validator
 */
 package funcvalid
