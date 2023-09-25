@@ -51,13 +51,13 @@ If it still sounds a bit cryptic, let's see the following example:
 	IntEq(42)(42)  // -> nil
 	IntEq(42)(0)   // -> error
 
-The actual factory functions are even a bit more generak by using generic types. The package also provides
-Not, Or and And factory functions with that you can chain other validators.
+The actual factory functions are even a bit more general by using generic types. The package also provides
+Not, Or and And factory functions with that you can chain other validators (see funcvalid.go).
+
+The package also contains built-in validators from the [validator] package, that is the best of the
+tag based validators (see validator_builtin.go).
 
 For further details see the documentation of the functions, and have a functional fun in Go!
-
-I've copied/reworked most of the built-in validators from the [validator] package, that is the best of the
-tag based validators.
 
 [curry post]: https://medium.com/@meeusdylan/function-currying-in-go-a88672d6ebcf
 [validator]: https://github.com/go-playground/validator
